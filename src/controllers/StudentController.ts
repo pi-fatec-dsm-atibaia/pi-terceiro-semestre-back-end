@@ -90,4 +90,31 @@ export class StudentController {
       });
     }
   }
+
+  async resetPassword(req: Request, res: Response) {
+    try {
+      const { email } = req.body;
+
+      if  (!email) return res.status(400).json({ message: 'Email é obrigatório' });
+      
+      const student = await Student.findOne({where: {email: email}});
+
+      console.log("student banco", student)
+      
+      if (!student) {
+        return res.status(404).json({ message: 'Aluno não encontrado' });
+      }
+
+      const sendEmail = () => {
+        return "Email enviado com sucesso"
+      }
+      
+      res.json({ data: sendEmail() });
+    } catch (error: any) {
+      res.status(500).json({
+        message: 'Erro interno do servidor',
+        error: error.message
+      });
+    }
+  }
 }
