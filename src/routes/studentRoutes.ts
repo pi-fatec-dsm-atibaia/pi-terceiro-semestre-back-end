@@ -144,6 +144,7 @@ router.post('/login', studentController.login);
  *         description: Erro interno no servidor
  */
 
+//Routes do processo de recuperacao de senha
 router.post('/recover-password', studentController.requestPasswordReset);
 router.put('/recover-password', studentController.resetPassword);
 

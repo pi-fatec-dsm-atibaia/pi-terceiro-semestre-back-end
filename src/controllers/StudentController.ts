@@ -128,7 +128,7 @@ export class StudentController {
   //Precisa desenvolver
   async resetPassword(req: Request, res: Response){
     try {
-      
+      console.log('Teste');
     } catch (error: any) {
       
     }
