@@ -6,18 +6,20 @@ import { log } from 'console';
 export class StudentController {
   async create(req: Request, res: Response) {
     try {
-      const { nome, cpf, ra, rg, senha, email, telefone } = req.body;
+      const { id, idCurso, ra, rg, telefone, nome, email, cpf, senha } = req.body;
 
       const hashedPassword = await bcrypt.hash(senha, 10);
 
       const student = await Student.create({
-        nome,
-        cpf,
+        id,
+        idCurso,
         ra,
         rg,
-        senha: hashedPassword,
+        telefone,
+        nome,
         email,
-        telefone
+        cpf,
+        senha: hashedPassword,
       });
 
       const { senha: _, ...studentData } = student.toJSON();
