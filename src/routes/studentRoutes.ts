@@ -117,4 +117,34 @@ router.get('/:id', studentController.getById);
  */
 router.post('/login', studentController.login);
 
+/**
+ * @swagger
+ * /api/students/recover-password:
+ *   post:
+ *     summary: Inicia o processo de recuperação de senha (mock)
+ *     tags: [Students]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: Email do aluno
+ *     responses:
+ *       400:
+ *         description: O campo email é obrigatório
+ *       404:
+ *         description: Aluno não encontrado
+ *       500:
+ *         description: Erro interno no servidor
+ */
+
+router.post('/recover-password', studentController.requestPasswordReset);
+router.put('/recover-password', studentController.resetPassword);
+
 export default router;

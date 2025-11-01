@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import Student from '../models/Student';
+import { log } from 'console';
 
 export class StudentController {
   async create(req: Request, res: Response) {
@@ -88,6 +89,48 @@ export class StudentController {
         message: 'Erro interno do servidor',
         error: error.message
       });
+    }
+  }
+
+
+  async requestPasswordReset(req: Request, res: Response){
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        return res.status(400).json({message: 'O campo email é obrigatório'});
+      }
+
+      const student = await Student.findOne({where: {email}});
+
+      if (!student) {
+        return res.status(404).json({message: 'Aluno não encontrado'});
+      }
+
+      const sendEmail = () => {
+        console.log(`Email enviado para ${student.email}`);
+      }
+
+      sendEmail();
+      
+      res.json({
+        message: 'E-mail de recuperação de senha enviado com sucesso!',
+      });
+      
+    } catch (error: any) {
+      res.status(500).json({
+        message: 'Erro interno no servidor',
+        error: error.message
+      });      
+    }
+  }
+
+  //Precisa desenvolver
+  async resetPassword(req: Request, res: Response){
+    try {
+      
+    } catch (error: any) {
+      
     }
   }
 }
