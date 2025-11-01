@@ -1,43 +1,29 @@
-import { DataTypes, Model } from "sequelize";
-import sequelize from "../config/database";
+import { DataTypes, Model } from 'sequelize';
+import sequelize from '../config/database';
 
 export interface CourseAttributes {
-    id?: number;
-    nome: string;
-    periodo: string;
-    semestre: string;
+  id?: number;
+  nome: string;
+  quantSemestre: number;
+  periodo: string;
 }
 
 class Course extends Model<CourseAttributes> implements CourseAttributes {
-    public id!: number;
-    public nome!: string;
-    public periodo!: string;
-    public semestre!: string;
+  public id!: number;
+  public nome!: string;
+  public quantSemestre!: number;
+  public periodo!: string;
 }
 
-Course.init ({
-    id: {
-        type: DataTypes.NUMBER,
-        autoIncrement: true,
-        primaryKey: true,
-    },
-    nome: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true
-    },
-    periodo: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    semestre: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
+Course.init({
+  id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+  nome: { type: DataTypes.STRING(100), allowNull: false },
+  quantSemestre: { type: DataTypes.INTEGER, allowNull: false },
+  periodo: { type: DataTypes.STRING(20), allowNull: false }
 }, {
-    sequelize,
-    modelName: 'Course',
-    tableName: 'courses'
+  sequelize,
+  tableName: 'Curso',
+  modelName: 'courses'
 });
 
 export default Course;
