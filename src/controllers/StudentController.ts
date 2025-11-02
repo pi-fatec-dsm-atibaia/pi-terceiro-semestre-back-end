@@ -1,138 +1,38 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import Student from '../models/Student';
 import { log } from 'console';
 
+import Student from '../models/Student';
+import { account } from '../utils/accountHandler';
+
 export class StudentController {
-  async create(req: Request, res: Response) {
-    try {
-      const { id, idCurso, ra, rg, telefone, nome, email, cpf, senha } = req.body;
-
-      const hashedPassword = await bcrypt.hash(senha, 10);
-
-      const student = await Student.create({
-        id,
-        idCurso,
-        ra,
-        rg,
-        telefone,
-        nome,
-        email,
-        cpf,
-        senha: hashedPassword,
-      });
-
-      const { senha: _, ...studentData } = student.toJSON();
-      
-      res.status(201).json({
-        message: 'Aluno cadastrado com sucesso',
-        data: studentData
-      });
-    } catch (error: any) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
-        return res.status(400).json({
-          message: 'Dados já existem no sistema',
-          error: error.errors[0].message
-        });
-      }
-      
-      res.status(500).json({
-        message: 'Erro interno do servidor',
-        error: error.message
-      });
-    }
+  //Cria usuário Aluno
+  async createStudent(req: Request, res: Response) {
+    const result = await account.create(Student, req.body);
+    res.status(result.success ? 201 : result.status || 400).json(result);
   }
 
+  //Realiza login do Aluno
+  async loginStudent(req: Request, res: Response) {
+    const result = await account.login(Student, req.body);
+    res.status(result.success ? 201 : result.status || 400).json(result);
+  }
+
+  //Retorna ID do Aluno
   async getById(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      
-      const student = await Student.findByPk(id);
-      
-      if (!student) {
-        return res.status(404).json({ message: 'Aluno não encontrado' });
-      }
+    const { id } = req.params;
+    const result = await account.getById(Student, Number(id));
 
-      const { senha: _, ...studentData } = student.toJSON();
-      
-      res.json({ data: studentData });
-    } catch (error: any) {
-      res.status(500).json({
-        message: 'Erro interno do servidor',
-        error: error.message
-      });
-    }
+    res.status(result.success ? 200 : result.status || 400).json(result);
   }
 
-  async login(req: Request, res: Response) {
-    try {
-      const { email, senha } = req.body;
-      
-      const student = await Student.findOne({ where: { email } });
-      
-      if (!student) {
-        return res.status(401).json({ message: 'Credenciais inválidas' });
-      }
-
-      const isValidPassword = await bcrypt.compare(senha, student.senha);
-      
-      if (!isValidPassword) {
-        return res.status(401).json({ message: 'Credenciais inválidas' });
-      }
-
-      const { senha: _, ...studentData } = student.toJSON();
-      
-      res.json({
-        message: 'Login realizado com sucesso',
-        data: studentData
-      });
-    } catch (error: any) {
-      res.status(500).json({
-        message: 'Erro interno do servidor',
-        error: error.message
-      });
-    }
+  //Realiza envio de email e gera token de recuperação de senha
+  async requestPasswordRecover(req: Request, res: Response) {
+    
   }
 
+  //Valida Token e recupera a senha
+  async recoverPassword(req: Request, res: Response){
 
-  async requestPasswordReset(req: Request, res: Response){
-    try {
-      const { email } = req.body;
-
-      if (!email) {
-        return res.status(400).json({message: 'O campo email é obrigatório'});
-      }
-
-      const student = await Student.findOne({where: {email}});
-
-      if (!student) {
-        return res.status(404).json({message: 'Aluno não encontrado'});
-      }
-
-      const sendEmail = () => {
-        console.log(`Email enviado para ${student.email}`);
-      }
-
-      sendEmail();
-      
-      res.json({
-        message: 'E-mail de recuperação de senha enviado com sucesso!',
-      });
-      
-    } catch (error: any) {
-      res.status(500).json({
-        message: 'Erro interno no servidor',
-        error: error.message
-      });      
-    }
-  }
-
-  //Precisa desenvolver
-  async resetPassword(req: Request, res: Response){
-    try {
-      
-    } catch (error: any) {
-      
-    }
   }
 }

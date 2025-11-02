@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 
+//Interface com atributos do Curso
 export interface StudentAttributes {
   id?: number;
   idCurso: number;
@@ -13,6 +14,7 @@ export interface StudentAttributes {
   senha: string;
 }
 
+//Classe com atributos do Curso
 class Student extends Model<StudentAttributes> implements StudentAttributes {
   public id!: number;
   public idCurso!: number;
@@ -25,6 +27,7 @@ class Student extends Model<StudentAttributes> implements StudentAttributes {
   public senha!: string;
 }
 
+//Configura atributos e integra ao Banco de Dados
 Student.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   idCurso: { type: DataTypes.INTEGER },
@@ -37,8 +40,8 @@ Student.init({
   senha: { type: DataTypes.STRING(100), allowNull: false }
 }, {
   sequelize,
-  tableName: 'Aluno',
-  modelName: 'Student'
+  tableName: 'Student',
+  modelName: 'students'
 });
 
 export default Student;

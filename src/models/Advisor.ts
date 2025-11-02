@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 
+//Interface com atributos do Orientador
 export interface AdvisorAttributes {
   id?: number;
   nome: string;
@@ -9,6 +10,7 @@ export interface AdvisorAttributes {
   senha: string;
 }
 
+//Classe com atributos do Orientador
 class Advisor extends Model<AdvisorAttributes> implements AdvisorAttributes {
   public id!: number;
   public nome!: string;
@@ -17,6 +19,7 @@ class Advisor extends Model<AdvisorAttributes> implements AdvisorAttributes {
   public senha!: string;
 }
 
+//Configura atributos e integra ao Banco de Dados
 Advisor.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   nome: { type: DataTypes.STRING(100), allowNull: false },
@@ -25,8 +28,8 @@ Advisor.init({
   senha: { type: DataTypes.STRING(100), allowNull: false }
 }, {
   sequelize,
-  tableName: 'Orientador',
-  modelName: 'Advisor'
+  tableName: 'Advisor',
+  modelName: 'advisors'
 });
 
 export default Advisor;

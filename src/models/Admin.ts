@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 
+//Interface com atributos do Administrador
 export interface AdministratorAttributes {
   id?: number;
   cpf: string;
@@ -9,6 +10,7 @@ export interface AdministratorAttributes {
   senha: string;
 }
 
+//Classe com atributos do Administrador
 class Administrator extends Model<AdministratorAttributes> implements AdministratorAttributes {
   public id!: number;
   public cpf!: string;
@@ -17,6 +19,7 @@ class Administrator extends Model<AdministratorAttributes> implements Administra
   public senha!: string;
 }
 
+//Configura dados e integra ao Banco de Dados
 Administrator.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   cpf: { type: DataTypes.STRING(14), allowNull: false, unique: true },
@@ -25,8 +28,8 @@ Administrator.init({
   senha: { type: DataTypes.STRING(100), allowNull: false }
 }, {
   sequelize,
-  tableName: 'Administrador',
-  modelName: 'administrators'
+  tableName: 'Admin',
+  modelName: 'admins'
 });
 
 export default Administrator;

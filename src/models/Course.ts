@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 
+//Interface com atributos do Curso
 export interface CourseAttributes {
   id?: number;
   nome: string;
@@ -8,6 +9,7 @@ export interface CourseAttributes {
   periodo: string;
 }
 
+//Classe com atributos do Orientador
 class Course extends Model<CourseAttributes> implements CourseAttributes {
   public id!: number;
   public nome!: string;
@@ -15,6 +17,7 @@ class Course extends Model<CourseAttributes> implements CourseAttributes {
   public periodo!: string;
 }
 
+//Configura atributos e integra ao Banco de Dados
 Course.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   nome: { type: DataTypes.STRING(100), allowNull: false },
@@ -22,7 +25,7 @@ Course.init({
   periodo: { type: DataTypes.STRING(20), allowNull: false }
 }, {
   sequelize,
-  tableName: 'Curso',
+  tableName: 'Course',
   modelName: 'courses'
 });
 

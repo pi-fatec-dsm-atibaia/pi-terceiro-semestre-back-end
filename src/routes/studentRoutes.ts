@@ -62,7 +62,7 @@ const studentController = new StudentController();
  *       500:
  *         description: Erro interno do servidor
  */
-router.post('/', studentController.create);
+router.post('/', studentController.createStudent);
 
 /**
  * @swagger
@@ -115,7 +115,7 @@ router.get('/:id', studentController.getById);
  *       500:
  *         description: Erro interno do servidor
  */
-router.post('/login', studentController.login);
+router.post('/login', studentController.loginStudent);
 
 /**
  * @swagger
@@ -144,7 +144,7 @@ router.post('/login', studentController.login);
  *         description: Erro interno no servidor
  */
 
-router.post('/recover-password', studentController.requestPasswordReset);
-router.put('/recover-password', studentController.resetPassword);
+router.post('/recover-password', studentController.requestPasswordRecover);
+router.put('/recover-password', studentController.recoverPassword);
 
 export default router;
