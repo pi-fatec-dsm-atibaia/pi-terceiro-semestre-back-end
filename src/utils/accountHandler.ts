@@ -1,23 +1,23 @@
 import bcrypt from "bcrypt";
-import { Op } from "sequelize";
+import { Model, ModelStatic } from "sequelize";
 
 //Objeto contendo as funções genéricas relacionadas aos usuários
 export const account = {
     //Cria usuário
-    async create(Model: any, data: any){
+    async create<T extends Model<any, any>>(Model: ModelStatic<T>, data: Omit<T["_creationAttributes"], "id" | "senha"> & {senha: string}){
         try{
             const hashedPassword = await bcrypt .hash(data.senha, 10);
             const user =await Model.create({
                 ...data,
                 senha: hashedPassword,
-            });
+            } as T["_creationAttributes"]);
 
-            const {senha, ...userData} = user.toJSON();
+            const {senha, ...userData} = user.toJSON() as any;
 
             return {
                 success: true,
                 data: userData,
-                message: `${Model.modelName} criado com sucesso!`,
+                message: `${Model.name} criado com sucesso!`,
             };
         }catch (error: any){
             if (error.name === "SequelizeUniqueConstraintError"){
@@ -39,21 +39,24 @@ export const account = {
     },
 
     //Realiza login do usuário
-    async login(Model: any, {email, senha}: {email: string, senha: string}) {
+    async login<T extends Model<any, any>>(Model: ModelStatic<T>, {email, senha}: {email: string, senha: string}) {
         try {
-            const user = await Model.findOne({where: {email}});
+            const user = await Model.findOne({where: {email} as Record<string, any>});
             if (!user) {
                 return { success: false, status: 404, message: "Usuário não encontrado"};
             }
 
-            const isValidPassword = await bcrypt.compare(senha, user.senha);
+            const isValidPassword = await bcrypt.compare(senha, (user as any).senha);
             if (!isValidPassword) {
                 return { success: false, status: 401, message: "Senha incorreta"};
             }
 
+            const { senha: _, ...userData } = user.toJSON() as any;
+
             return {
                 success: true,
                 message: "Login realizado com sucesso",
+                data: userData,
             };
         } catch (error: any) {
             return {
@@ -66,7 +69,7 @@ export const account = {
     },
 
     //Retorna ID do usuário
-    async getById(Model: any, id: number){
+    async getById<T extends Model<any, any>>(Model: ModelStatic<T>, id: number){
         const user = await Model.findByPk(id);
 
         try {
@@ -74,7 +77,7 @@ export const account = {
                 return {
                     success: false,
                     status: 404,
-                    message: `${Model.modelName || 'Usuário'} não encontrado.`,
+                    message: `${Model.name || 'Usuário'} não encontrado.`,
                 };
             }
     
@@ -83,7 +86,7 @@ export const account = {
             return {
                 success: true,
                 data: userData,
-                message: `${Model.modelName || 'Usuário'} encontrado!`,
+                message: `${Model.name || 'Usuário'} encontrado!`,
             };
         } catch (error: any) {
             return {
