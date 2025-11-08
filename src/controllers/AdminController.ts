@@ -14,8 +14,26 @@ export class AdminController {
     }
 
     //Realiza login do Administrador
-    async loginAdmin(req: Request, res: Response){
+    async loginAdmin(req: Request, res: Response) {
         const result = await account.login(Administrator, req.body);
         return res.status(result.success ? 201 : result.status || 400).json(result);
+    }
+
+    //Retorna ID do Aluno
+    async getById(req: Request, res: Response) {
+        const { id } = req.params;
+        const result = await account.getById(Administrator, Number(id));
+
+        res.status(result.success ? 200 : result.status || 400).json(result);
+    }
+
+    //Realiza envio de email e gera token de recuperação de senha
+    async requestPasswordRecover(req: Request, res: Response) {
+
+    }
+
+    //Valida Token e recupera a senha
+    async recoverPassword(req: Request, res: Response) {
+
     }
 }
