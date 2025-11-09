@@ -36,7 +36,7 @@ Student.init({
   telefone: { type: DataTypes.STRING(20), allowNull: false },
   nome: { type: DataTypes.STRING(100), allowNull: false },
   email: { type: DataTypes.STRING(100), allowNull: false },
-  cpf: { type: DataTypes.STRING(14), allowNull: false },
+  cpf: { type: DataTypes.STRING(14), allowNull: false, unique: true },
   senha: { type: DataTypes.STRING(100), allowNull: false }
 }, {
   sequelize,

@@ -19,7 +19,7 @@ class Administrator extends Model<AdministratorAttributes> implements Administra
   public senha!: string;
 }
 
-//Configura dados e integra ao Banco de Dados
+//Configura atributos e integra ao Banco de Dados
 Administrator.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   cpf: { type: DataTypes.STRING(14), allowNull: false, unique: true },
