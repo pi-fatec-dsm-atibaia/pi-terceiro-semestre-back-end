@@ -4,6 +4,8 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpecs from './config/swagger';
 import sequelize from './config/database';
 
+import './models/associations';
+
 //Routes imports
 import studentRoutes from './routes/studentRoutes';
 import adminRoutes from './routes/adminRoutes';
