@@ -3,7 +3,11 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpecs from './config/swagger';
 import sequelize from './config/database';
+
+//Routes imports
 import studentRoutes from './routes/studentRoutes';
+import adminRoutes from './routes/adminRoutes';
+import courseRoutes from './routes/courseRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +17,8 @@ app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use('/api/students', studentRoutes);
+app.use('/api/admins', adminRoutes);
+app.use('/api/courses', courseRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cadastro de Alunos' });

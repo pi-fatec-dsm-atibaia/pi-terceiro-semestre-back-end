@@ -1,93 +1,38 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
+import { log } from 'console';
+
 import Student from '../models/Student';
+import { account } from '../utils/accountHandler';
 
 export class StudentController {
-  async create(req: Request, res: Response) {
-    try {
-      const { nome, cpf, ra, rg, senha, email, telefone } = req.body;
-
-      const hashedPassword = await bcrypt.hash(senha, 10);
-
-      const student = await Student.create({
-        nome,
-        cpf,
-        ra,
-        rg,
-        senha: hashedPassword,
-        email,
-        telefone
-      });
-
-      const { senha: _, ...studentData } = student.toJSON();
-      
-      res.status(201).json({
-        message: 'Aluno cadastrado com sucesso',
-        data: studentData
-      });
-    } catch (error: any) {
-      if (error.name === 'SequelizeUniqueConstraintError') {
-        return res.status(400).json({
-          message: 'Dados já existem no sistema',
-          error: error.errors[0].message
-        });
-      }
-      
-      res.status(500).json({
-        message: 'Erro interno do servidor',
-        error: error.message
-      });
-    }
+  //Cria usuário Aluno
+  async createStudent(req: Request, res: Response) {
+    const result = await account.create(Student, req.body);
+    res.status(result.success ? 201 : result.status || 400).json(result);
   }
 
+  //Realiza login do Aluno
+  async loginStudent(req: Request, res: Response) {
+    const result = await account.login(Student, req.body);
+    res.status(result.success ? 201 : result.status || 400).json(result);
+  }
+
+  //Retorna ID do Aluno
   async getById(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      
-      const student = await Student.findByPk(id);
-      
-      if (!student) {
-        return res.status(404).json({ message: 'Aluno não encontrado' });
-      }
+    const { id } = req.params;
+    const result = await account.getById(Student, Number(id));
 
-      const { senha: _, ...studentData } = student.toJSON();
-      
-      res.json({ data: studentData });
-    } catch (error: any) {
-      res.status(500).json({
-        message: 'Erro interno do servidor',
-        error: error.message
-      });
-    }
+    res.status(result.success ? 200 : result.status || 400).json(result);
   }
 
-  async login(req: Request, res: Response) {
-    try {
-      const { email, senha } = req.body;
-      
-      const student = await Student.findOne({ where: { email } });
-      
-      if (!student) {
-        return res.status(401).json({ message: 'Credenciais inválidas' });
-      }
+  //Realiza envio de email e gera token de recuperação de senha
+  async requestPasswordRecover(req: Request, res: Response) {
+    
+  }
 
-      const isValidPassword = await bcrypt.compare(senha, student.senha);
-      
-      if (!isValidPassword) {
-        return res.status(401).json({ message: 'Credenciais inválidas' });
-      }
+  //Valida Token e recupera a senha
+  async recoverPassword(req: Request, res: Response){
 
-      const { senha: _, ...studentData } = student.toJSON();
-      
-      res.json({
-        message: 'Login realizado com sucesso',
-        data: studentData
-      });
-    } catch (error: any) {
-      res.status(500).json({
-        message: 'Erro interno do servidor',
-        error: error.message
-      });
-    }
   }
 }

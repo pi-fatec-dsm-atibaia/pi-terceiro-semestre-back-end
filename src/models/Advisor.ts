@@ -1,26 +1,18 @@
 import { DataTypes, Model } from 'sequelize';
 import sequelize from '../config/database';
 
-//Interface com atributos do Curso
-export interface StudentAttributes {
+//Interface com atributos do Orientador
+export interface AdvisorAttributes {
   id?: number;
-  idCurso: number;
-  ra: string;
-  rg: string;
-  telefone: string;
   nome: string;
   email: string;
   cpf: string;
   senha: string;
 }
 
-//Classe com atributos do Curso
-class Student extends Model<StudentAttributes> implements StudentAttributes {
+//Classe com atributos do Orientador
+class Advisor extends Model<AdvisorAttributes> implements AdvisorAttributes {
   public id!: number;
-  public idCurso!: number;
-  public ra!: string;
-  public rg!: string;
-  public telefone!: string;
   public nome!: string;
   public email!: string;
   public cpf!: string;
@@ -28,20 +20,16 @@ class Student extends Model<StudentAttributes> implements StudentAttributes {
 }
 
 //Configura atributos e integra ao Banco de Dados
-Student.init({
+Advisor.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  idCurso: { type: DataTypes.INTEGER },
-  ra: { type: DataTypes.STRING(20), allowNull: false },
-  rg: { type: DataTypes.STRING(20), allowNull: false },
-  telefone: { type: DataTypes.STRING(20), allowNull: false },
   nome: { type: DataTypes.STRING(100), allowNull: false },
   email: { type: DataTypes.STRING(100), allowNull: false },
   cpf: { type: DataTypes.STRING(14), allowNull: false, unique: true },
   senha: { type: DataTypes.STRING(100), allowNull: false }
 }, {
   sequelize,
-  tableName: 'Student',
-  modelName: 'students'
+  tableName: 'Advisor',
+  modelName: 'advisors'
 });
 
-export default Student;
+export default Advisor;
