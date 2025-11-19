@@ -32,4 +32,6 @@ Administrator.init({
   modelName: 'admins'
 });
 
+//Teste
+
 export default Administrator;
