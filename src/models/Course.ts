@@ -26,7 +26,8 @@ Course.init({
 }, {
   sequelize,
   tableName: 'Course',
-  modelName: 'courses'
+  modelName: 'courses',
+  timestamps: false,
 });
 
 export default Course;

@@ -29,7 +29,8 @@ Advisor.init({
 }, {
   sequelize,
   tableName: 'Advisor',
-  modelName: 'advisors'
+  modelName: 'advisors',
+  timestamps: false,
 });
 
 export default Advisor;

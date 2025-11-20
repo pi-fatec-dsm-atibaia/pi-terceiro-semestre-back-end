@@ -1,4 +1,3 @@
-import { BelongsTo } from 'sequelize';
 import Administrator from './Admin';
 import AdminLink from './AdminLink';
 import Advisor from './Advisor';
@@ -12,15 +11,13 @@ import Link from './Links';
 import Request from './Request';
 import Student from './Student';
 
-/**
- * Associação entre Administrador e CadastroCurso
- * (N:M) Um administrador pode cadastrar vários cursos, e um curso pode ser cadastrado por vários administradores.
- */
-
+/* ---------------------------------------------------------
+   ADMINISTRADOR ↔ CURSO  (N:N)
+--------------------------------------------------------- */
 Administrator.belongsToMany(Course, {
     through: CourseRegistration,
     foreignKey: 'idAdministrador',
-    as: 'cursos',
+    as: 'cursosCadastrados',
 });
 
 Course.belongsToMany(Administrator, {
@@ -29,14 +26,12 @@ Course.belongsToMany(Administrator, {
     as: 'administradores',
 });
 
-/**
- * Associação entre Administrador e AdmVinculo
- * (1:N) Um administrador pode estar vinculado a vários vínculos.
- */
-
+/* ---------------------------------------------------------
+   ADMINISTRADOR (1:N) ADM_VINCULO
+--------------------------------------------------------- */
 Administrator.hasMany(AdminLink, {
     foreignKey: 'idAdministrador',
-    as: 'admVinculo',
+    as: 'vinculosAdministrador',
 });
 
 AdminLink.belongsTo(Administrator, {
@@ -44,29 +39,25 @@ AdminLink.belongsTo(Administrator, {
     as: 'administrador',
 });
 
-/**
- * Associação entre Vinculo e AdmVinculo
- * (1:N) Um vínculo pode estar associado a vários registros de AdmVinculo.
- */
-
+/* ---------------------------------------------------------
+   VINCULO (1:N) ADM_VINCULO
+--------------------------------------------------------- */
 Link.hasMany(AdminLink, {
+    foreignKey: 'idVinculo',
+    as: 'adminVinculos',
+});
+
+AdminLink.belongsTo(Link, {
     foreignKey: 'idVinculo',
     as: 'vinculo',
 });
 
-AdminLink.belongsTo(Link, {
-    foreignKey: 'idVInculo',
-    as: 'vinculo',
-});
-
-/**
- * Associação entre Curso e Vinculo
- * (1:N) Um curso pode ter vários vínculos.
- */
-
+/* ---------------------------------------------------------
+   CURSO (1:N) VINCULO
+--------------------------------------------------------- */
 Course.hasMany(Link, {
     foreignKey: 'idCurso',
-    as: 'vinculos',
+    as: 'vinculosCurso',
 });
 
 Link.belongsTo(Course, {
@@ -74,14 +65,12 @@ Link.belongsTo(Course, {
     as: 'curso',
 });
 
-/**
- * Associação entre Orientador e Vinculo
- * (1:N) Um orientador pode supervisionar vários vínculos.
- */
-
+/* ---------------------------------------------------------
+   ORIENTADOR (1:N) VINCULO
+--------------------------------------------------------- */
 Advisor.hasMany(Link, {
     foreignKey: 'idOrientador',
-    as: 'vinculos',
+    as: 'vinculosOrientador',
 });
 
 Link.belongsTo(Advisor, {
@@ -89,11 +78,9 @@ Link.belongsTo(Advisor, {
     as: 'orientador',
 });
 
-/**
- * Associação entre Curso e Aluno
- * (1:N) Um curso possui vários alunos.
- */
-
+/* ---------------------------------------------------------
+   CURSO (1:N) ALUNO
+--------------------------------------------------------- */
 Course.hasMany(Student, {
     foreignKey: 'idCurso',
     as: 'alunos',
@@ -104,11 +91,9 @@ Student.belongsTo(Course, {
     as: 'curso',
 });
 
-/**
- * Associação entre Documento e Equivalencia
- * (1:N) Um documento pode estar relacionado a várias equivalências.
- */
-
+/* ---------------------------------------------------------
+   DOCUMENTO (1:N) EQUIVALENCIA
+--------------------------------------------------------- */
 Document.hasMany(Equivalence, {
     foreignKey: 'idDocumento',
     as: 'equivalencias',
@@ -119,11 +104,9 @@ Equivalence.belongsTo(Document, {
     as: 'documento',
 });
 
-/**
- * Associação entre Equivalencia e Solicitacao
- * (1:N) Uma equivalência pode estar em várias solicitações.
- */
-
+/* ---------------------------------------------------------
+   EQUIVALENCIA (1:N) SOLICITACAO
+--------------------------------------------------------- */
 Equivalence.hasMany(Request, {
     foreignKey: 'idEquivalencia',
     as: 'solicitacoes',
@@ -134,44 +117,38 @@ Request.belongsTo(Equivalence, {
     as: 'equivalencia',
 });
 
-/**
- * Associação entre Aluno e Solicitacao
- * (1:N) Um aluno pode fazer várias solicitações.
- */
-
+/* ---------------------------------------------------------
+   ALUNO (1:N) SOLICITACAO
+--------------------------------------------------------- */
 Student.hasMany(Request, {
     foreignKey: 'idAluno',
-    as: 'solicitacoes',
+    as: 'solicitacoesAluno',
 });
 
 Request.belongsTo(Student, {
     foreignKey: 'idAluno',
-    as: 'solicitacoes',
+    as: 'aluno',
 });
 
-/**
- * Associação entre Empresa e Empregador
- * (1:N) Uma empresa pode ter vários empregadores.
- */
-
+/* ---------------------------------------------------------
+   EMPRESA (1:N) EMPREGADOR
+--------------------------------------------------------- */
 Company.hasMany(Employer, {
     foreignKey: 'idEmpresa',
-    as: 'empregadores',
+    as: 'empregadoresEmpresa',
 });
 
 Employer.belongsTo(Company, {
     foreignKey: 'idEmpresa',
-    as: 'empresa', 
+    as: 'empresa',
 });
 
-/**
- * Associação entre Solicitacao e Empregador
- * (1:N) Uma solicitação pode ter vários empregadores associados.
- */
-
+/* ---------------------------------------------------------
+   SOLICITACAO (1:N) EMPREGADOR
+--------------------------------------------------------- */
 Request.hasMany(Employer, {
     foreignKey: 'idSolicitacao',
-    as: 'empregadores',
+    as: 'empregadoresSolicitacao',
 });
 
 Employer.belongsTo(Request, {
