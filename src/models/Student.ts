@@ -41,7 +41,8 @@ Student.init({
 }, {
   sequelize,
   tableName: 'Student',
-  modelName: 'students'
+  modelName: 'students',
+  timestamps: false,
 });
 
 export default Student;

@@ -29,7 +29,8 @@ Administrator.init({
 }, {
   sequelize,
   tableName: 'Admin',
-  modelName: 'admins'
+  modelName: 'admins',
+  timestamps: false,
 });
 
 export default Administrator;
