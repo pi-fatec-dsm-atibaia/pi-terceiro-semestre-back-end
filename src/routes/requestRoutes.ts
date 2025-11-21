@@ -86,7 +86,7 @@ const requestController = new RequestController();
 router.post('/', requestController.sendRequest);
 
 
-/*
+/**
  * @swagger
  * /api/request/{id}:
  *   get:
@@ -94,7 +94,7 @@ router.post('/', requestController.sendRequest);
  *     tags: [Request]
  *     parameters:
  *       - in: path
- *         name: idCurso
+ *         name: id
  *         required: true
  *         schema:
  *           type: integer
@@ -107,7 +107,6 @@ router.post('/', requestController.sendRequest);
  *       500:
  *         description: Erro interno do servidor
  */
-
 router.get('/:id', requestController.listRequestsFromCourse);
 
 export default router;
