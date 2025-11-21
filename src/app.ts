@@ -10,6 +10,8 @@ import './models/associations';
 import studentRoutes from './routes/studentRoutes';
 import adminRoutes from './routes/adminRoutes';
 import courseRoutes from './routes/courseRoutes';
+import requestRoutes from './routes/requestRoutes';
+import { request } from 'http';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -21,6 +23,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use('/api/students', studentRoutes);
 app.use('/api/admins', adminRoutes);
 app.use('/api/courses', courseRoutes);
+app.use('/api/request', requestRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cadastro de Alunos' });
