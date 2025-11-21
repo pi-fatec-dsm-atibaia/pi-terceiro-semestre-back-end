@@ -101,7 +101,7 @@ Document.belongsTo(Request, {
 
 Request.hasMany(Document, {
     foreignKey: 'idSolicitacao',
-    as: 'Solicitacao',
+    as: 'Documento',
 });
 
 /* ---------------------------------------------------------
