@@ -92,16 +92,16 @@ Student.belongsTo(Course, {
 });
 
 /* ---------------------------------------------------------
-   DOCUMENTO (1:N) EQUIVALENCIA
+   DOCUMENTO (1:N) SOLICITACAO
 --------------------------------------------------------- */
-Document.hasMany(Equivalence, {
-    foreignKey: 'idDocumento',
-    as: 'equivalencias',
+Document.belongsTo(Request, {
+    foreignKey: 'idSolicitacao',
+    as: 'Solicitacao',
 });
 
-Equivalence.belongsTo(Document, {
-    foreignKey: 'idDocumento',
-    as: 'documento',
+Request.hasMany(Document, {
+    foreignKey: 'idSolicitacao',
+    as: 'Documento',
 });
 
 /* ---------------------------------------------------------
@@ -146,12 +146,12 @@ Employer.belongsTo(Company, {
 /* ---------------------------------------------------------
    SOLICITACAO (1:N) EMPREGADOR
 --------------------------------------------------------- */
-Request.hasMany(Employer, {
-    foreignKey: 'idSolicitacao',
+Employer.hasMany(Request, {
+    foreignKey: 'idEmpregador',
     as: 'empregadoresSolicitacao',
 });
 
-Employer.belongsTo(Request, {
-    foreignKey: 'idSolicitacao',
+Request.belongsTo(Employer, {
+    foreignKey: 'idEmpregador',
     as: 'solicitacao',
 });

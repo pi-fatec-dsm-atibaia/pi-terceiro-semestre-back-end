@@ -12,6 +12,7 @@ export interface SolicitacaoAttributes {
   departamento?: string;
   periodoTrabalho?: string;
   idAluno: number;
+  idEmpregador: number;
 }
 
 class Request extends Model<SolicitacaoAttributes> implements SolicitacaoAttributes {
@@ -25,6 +26,8 @@ class Request extends Model<SolicitacaoAttributes> implements SolicitacaoAttribu
   public departamento?: string;
   public periodoTrabalho?: string;
   public idAluno!: number;
+  public idEmpregador!: number;
+  
 }
 
 Request.init({
@@ -37,7 +40,8 @@ Request.init({
   funcao: { type: DataTypes.STRING(100) },
   departamento: { type: DataTypes.STRING(100) },
   periodoTrabalho: { type: DataTypes.STRING(100) },
-  idAluno: { type: DataTypes.INTEGER, allowNull: false }
+  idAluno: { type: DataTypes.INTEGER, allowNull: false },
+  idEmpregador: { type: DataTypes.INTEGER, allowNull: true}
 }, {
   sequelize,
   tableName: "Solicitacao",
