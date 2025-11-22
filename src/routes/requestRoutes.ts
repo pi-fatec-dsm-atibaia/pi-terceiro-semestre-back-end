@@ -88,7 +88,7 @@ router.post('/', requestController.sendRequest);
 
 /**
  * @swagger
- * /api/request/{id}:
+ * /api/request/course/{id}:
  *   get:
  *     summary: Busca solicitações por id do curso
  *     tags: [Request]
@@ -107,7 +107,7 @@ router.post('/', requestController.sendRequest);
  *       500:
  *         description: Erro interno do servidor
  */
-router.get('/:id', requestController.listRequestsFromCourse);
+router.get('/course/:id', requestController.listRequestsFromCourse);
 
 /**
  * @swagger
