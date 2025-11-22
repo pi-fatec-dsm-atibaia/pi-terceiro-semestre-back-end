@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import RequestM from '../models/Request';
 import Student from '../models/Student';
-import { Association, where } from "sequelize";
+import { Association, Model, where } from "sequelize";
 
 //Controler da Solicitação
 export class RequestController {
@@ -71,25 +71,52 @@ export class RequestController {
                     {
                         model: Student,
                         as: "aluno",
-                        where: {idCurso: id}
+                        where: {idCurso: id},
+                        attributes: {
+                            exclude: ['senha']
+                        }
                     }
                 ]
             });
 
 
             res.status(201).json({
-                message: 'Solicitação enviada com sucesso',
+                message: "Solicitações encontradas",
                 data: result
             });
         }
         catch(error : any){
-            if (error.name === 'SequelizeUniqueConstraintError') {
-                return res.status(400).json({
-                    message: 'Dados já existem no sistema',
-                    error: error.errors[0].message
-                });
-            }
+            res.status(500).json({
+                message: 'Não foi possível listar as solicitações',
+                error: error.message
+            });
+        }
+    }
 
+    // Lista as solicitações dos alunos
+    async listRequestsByStudent(req: Request, res: Response){
+        try{
+            const {id} = req.params
+            const result = await RequestM.findAll({
+                include: [
+                    {
+                        model: Student,
+                        as: "aluno",
+                        where: {id: id},
+                        attributes: {
+                            exclude: ['senha']
+                        }
+                    }
+                ]
+            })
+
+            res.status(201).json({
+                message: "Solicitações encontradas",
+                data: result
+            })
+
+        }
+        catch(error : any){
             res.status(500).json({
                 message: 'Não foi possível listar as solicitações',
                 error: error.message

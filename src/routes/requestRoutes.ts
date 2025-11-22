@@ -109,4 +109,27 @@ router.post('/', requestController.sendRequest);
  */
 router.get('/:id', requestController.listRequestsFromCourse);
 
+/**
+ * @swagger
+ * /api/request/student/{id}:
+ *   get:
+ *     summary: Busca solicitações por id do aluno
+ *     tags: [Request]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do curso
+ *     responses:
+ *       200:
+ *         description: Solicitações encontradas
+ *       404:
+ *         description: Não há solicitações
+ *       500:
+ *         description: Erro interno do servidor
+ */
+router.get('/student/:id', requestController.listRequestsByStudent);
+
 export default router;
