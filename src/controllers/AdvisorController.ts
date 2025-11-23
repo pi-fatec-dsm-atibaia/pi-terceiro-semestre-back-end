@@ -9,13 +9,13 @@ export class AdvisorController {
         res.status(result.success ? 201 : result.status || 400).json(result);
     }
 
-    //Realiza login do Aluno
+    //Realiza login do orientador
     async loginAdvisor(req: Request, res: Response) {
         const result = await account.login(Advisor, req.body);
         res.status(result.success ? 201 : result.status || 400).json(result);
     }
 
-    //Retorna ID do Aluno
+    //Retorna ID do orientador
     async getById(req: Request, res: Response) {
         const { id } = req.params;
         const result = await account.getById(Advisor, Number(id));

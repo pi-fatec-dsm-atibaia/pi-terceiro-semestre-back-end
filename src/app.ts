@@ -8,9 +8,11 @@ import './models/associations';
 
 //Routes imports
 import studentRoutes from './routes/studentRoutes';
+import advisorRoutes from './routes/advisorRoutes';
 import adminRoutes from './routes/adminRoutes';
 import courseRoutes from './routes/courseRoutes';
 import requestRoutes from './routes/requestRoutes';
+import linkRoutes from './routes/linkRoutes';
 import { request } from 'http';
 
 const app = express();
@@ -21,9 +23,11 @@ app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use('/api/students', studentRoutes);
+app.use('/api/advisors', advisorRoutes);
 app.use('/api/admins', adminRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/request', requestRoutes);
+app.use('/api/link', linkRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cadastro de Alunos' });

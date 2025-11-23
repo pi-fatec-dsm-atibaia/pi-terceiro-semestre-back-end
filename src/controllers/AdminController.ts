@@ -19,7 +19,7 @@ export class AdminController {
         return res.status(result.success ? 201 : result.status || 400).json(result);
     }
 
-    //Retorna ID do Aluno
+    //Retorna ID do Administrador
     async getById(req: Request, res: Response) {
         const { id } = req.params;
         const result = await account.getById(Administrator, Number(id));

@@ -8,38 +8,80 @@ const requestController = new RequestController();
  * @swagger
  * components:
  *   schemas:
- *     Request:  
+ *     Request:
  *       type: object
  *       required:
  *         - idEquivalencia
  *         - idAluno
  *         - statusSolicitacao
- *         - periodoTrabalho
  *         - dtSolicitacao
  *       properties:
  *         idEquivalencia:
  *           type: number
- *           description: Tipo de equivalência
+ *           description: ID do tipo de equivalência
  *         idAluno:
  *           type: integer
- *           description: Aluno
+ *           description: ID do aluno
  *         statusSolicitacao:
  *           type: string
- *           description: Status da solicitacao
+ *           description: Status da solicitação
  *         dtSolicitacao:
  *           type: string
  *           format: date
- *           description: Data em que foi enviada a solicitação
+ *           description: Data da solicitação
  *         periodoTrabalho:
  *           type: string
  *           description: Período de trabalho
+ *         protocolo:
+ *           type: string
+ *           description: Protocolo da solicitação
+ *         observacao:
+ *           type: string
+ *           description: Observações adicionais
+ *         funcao:
+ *           type: string
+ *           description: Função exercida
+ *         departamento:
+ *           type: string
+ *           description: Departamento do aluno
+ *
+ *         # EMPREGADOR
+ *         empregadorNome:
+ *           type: string
+ *           description: Nome do empregador
+ *         empregadorEmail:
+ *           type: string
+ *           description: Email do empregador
+ *         empregadorRg:
+ *           type: string
+ *           description: RG do empregador
+ *         empregadorCargo:
+ *           type: string
+ *           description: Cargo do empregador
+ *
+ *         # EMPRESA
+ *         cnpj:
+ *           type: string
+ *           description: CNPJ da empresa
+ *         empresaNome:
+ *           type: string
+ *           description: Nome fantasia da empresa
+ *         razaoSocial:
+ *           type: string
+ *           description: Razão social da empresa
+ *         site:
+ *           type: string
+ *           description: Site da empresa
+ *         endereco:
+ *           type: string
+ *           description: Endereço da empresa
  */
 
 /**
  * @swagger
  * /api/request:
  *   post:
- *     summary: Envia uma solicitação
+ *     summary: Envia uma solicitação de equivalência
  *     tags: [Request]
  *     requestBody:
  *       required: true
@@ -49,7 +91,7 @@ const requestController = new RequestController();
  *             $ref: '#/components/schemas/Request'
  *     responses:
  *       201:
- *         description: Curso cadastrado com sucesso
+ *         description: Solicitação criada com sucesso
  *         content:
  *           application/json:
  *             schema:
@@ -71,7 +113,7 @@ const requestController = new RequestController();
  *                 error:
  *                   type: string
  *       500:
- *         description: Erro ao cadastrar curso
+ *         description: Erro interno ao enviar solicitação
  *         content:
  *           application/json:
  *             schema:
@@ -131,5 +173,66 @@ router.get('/course/:id', requestController.listRequestsFromCourse);
  *         description: Erro interno do servidor
  */
 router.get('/student/:id', requestController.listRequestsByStudent);
+
+
+/**
+ * @swagger
+ * /api/request/status/:
+ *   put:
+ *     summary: Atualiza status da solicitação
+ *     tags: [Request]
+ *     description: Atualiza status
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: number
+ *                 description: id da solicitação
+ *               statusSolicitacao:
+ *                 type: string
+ *                 description: status da solicitacao
+ *     responses:
+ *       200:
+ *         description: Senha redefinida com sucesso
+ *       400:
+ *         description: 
+ */
+router.put('/status/', requestController.updateStatus);
+
+/**
+ * @swagger
+ * /api/request/obs/:
+ *   put:
+ *     summary: Atualiza status da solicitação
+ *     tags: [Request]
+ *     description: Atualiza status
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id
+ *             properties:
+ *               id:
+ *                 type: number
+ *                 description: id da solicitação
+ *               observacao:
+ *                 type: string
+ *                 description: observacao da solicitacao
+ *     responses:
+ *       200:
+ *         description: Senha redefinida com sucesso
+ *       400:
+ *         description: 
+ */
+router.put('/obs/', requestController.updateObs);
 
 export default router;
