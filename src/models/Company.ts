@@ -20,7 +20,7 @@ class Company extends Model<CompanyAttributes> implements CompanyAttributes {
 Company.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   cnpj: { type: DataTypes.STRING(18), allowNull: false },
-  site: { type: DataTypes.STRING(100) },
+  site: { type: DataTypes.STRING(100), allowNull: true },
   razaoSocial: { type: DataTypes.STRING(100), allowNull: false },
   endereco: { type: DataTypes.STRING(200), allowNull: false }
 }, {
