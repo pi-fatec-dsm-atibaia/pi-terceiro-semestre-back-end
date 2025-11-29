@@ -30,4 +30,22 @@ export class MailService {
             `,
         });
     }
+
+    async sendEmployerToken(email: string, token: string) {
+        const domain = process.env.MAILGUN_DOMAIN!;
+        
+        const url = `${process.env.FRONTEND_URL}/test/token=${token}`;
+
+        return await this.mg.messages.create(domain, {
+            from: process.env.MAILGUN_FROM!,
+            to: email,
+            subject: "Confirmação de estágio",
+            html: `
+                <h2>Recuperação de Senha</h2>
+                <p>Clique no link abaixo para confirmar dados:</p>
+                <a href="${url}">${url}</a>
+                <p>Este link expira em 1 hora.</p>
+            `,
+        });
+    }
 }
