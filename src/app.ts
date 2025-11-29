@@ -1,3 +1,6 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -13,6 +16,7 @@ import adminRoutes from './routes/adminRoutes';
 import courseRoutes from './routes/courseRoutes';
 import requestRoutes from './routes/requestRoutes';
 import linkRoutes from './routes/linkRoutes';
+import authRoutes from './routes/authRoutes';
 import { request } from 'http';
 
 const app = express();
@@ -28,6 +32,7 @@ app.use('/api/admins', adminRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/request', requestRoutes);
 app.use('/api/link', linkRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cadastro de Alunos' });
@@ -35,11 +40,17 @@ app.get('/', (req, res) => {
 
 const startServer = async () => {
   try {
+
+    console.log("JWT_SECRET: ", process.env.JWT_SECRET);
+    
+
     await sequelize.authenticate();
     console.log('Conexão com o banco estabelecida com sucesso.');
     
     await sequelize.sync();
     console.log('Tabelas sincronizadas.');
+
+
     
     app.listen(PORT, () => {
       console.log(`Servidor rodando na porta ${PORT}`);
