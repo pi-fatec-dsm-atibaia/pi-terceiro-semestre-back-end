@@ -1,11 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpecs from './config/swagger';
 import sequelize from './config/database';
+import { request } from 'http';
 
 import './models/associations';
 
@@ -17,7 +19,8 @@ import courseRoutes from './routes/courseRoutes';
 import requestRoutes from './routes/requestRoutes';
 import linkRoutes from './routes/linkRoutes';
 import authRoutes from './routes/authRoutes';
-import { request } from 'http';
+import documentRoutes from './routes/documentRoutes';
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,6 +36,8 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/request', requestRoutes);
 app.use('/api/link', linkRoutes);
 app.use('/api/auth', authRoutes);
+app.use('./uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/api/documents', documentRoutes)
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cadastro de Alunos' });

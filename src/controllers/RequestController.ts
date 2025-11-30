@@ -108,7 +108,7 @@ export class RequestController {
             }
 
             res.status(500).json({
-                message: 'Erro ao cadastrar curso',
+                message: 'Erro ao criar solicitação',
                 error: error.message
             });
         }
@@ -247,10 +247,5 @@ export class RequestController {
                 message: "Erro no servidor!"
             })
         }
-    }
-
-    // Envia documento de uma solicitação
-    async sendDocument(req: Request, res: Response) {
-        // TODO
     }
 }
