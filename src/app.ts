@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+dotenv.config({path: path.resolve(__dirname,'.env') });
 
 import path from 'path';
 import express from 'express';
@@ -20,7 +21,7 @@ import requestRoutes from './routes/requestRoutes';
 import linkRoutes from './routes/linkRoutes';
 import authRoutes from './routes/authRoutes';
 import documentRoutes from './routes/documentRoutes';
-
+import employerRoutes from './routes/EmployerRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -38,6 +39,7 @@ app.use('/api/link', linkRoutes);
 app.use('/api/auth', authRoutes);
 app.use('./uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/documents', documentRoutes)
+app.use('/api/employer', employerRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cadastro de Alunos' });
@@ -47,6 +49,7 @@ const startServer = async () => {
   try {
 
     console.log("JWT_SECRET: ", process.env.JWT_SECRET);
+    console.log("MAILGUN_API_KEY: ", process.env.MAILGUN_API_KEY);
     
 
     await sequelize.authenticate();
