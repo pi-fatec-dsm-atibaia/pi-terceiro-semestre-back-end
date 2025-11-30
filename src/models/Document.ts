@@ -19,7 +19,7 @@ Document.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   idSolicitacao: {type: DataTypes.INTEGER, allowNull: false},
   tipoArquivo: { type: DataTypes.STRING(50), allowNull: false },
-  arquivo: { type: DataTypes.STRING(50), allowNull: false }
+  arquivo: { type: DataTypes.STRING(255), allowNull: false }
 }, {
   sequelize,
   tableName: "Documento",
