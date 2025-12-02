@@ -24,7 +24,7 @@ Administrator.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   cpf: { type: DataTypes.STRING(14), allowNull: false, unique: true },
   nome: { type: DataTypes.STRING(100), allowNull: false },
-  email: { type: DataTypes.STRING(100), allowNull: false },
+  email: { type: DataTypes.STRING(100), allowNull: false, unique: true },
   senha: { type: DataTypes.STRING(100), allowNull: false }
 }, {
   sequelize,

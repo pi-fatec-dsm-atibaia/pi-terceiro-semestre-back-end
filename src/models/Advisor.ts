@@ -22,7 +22,7 @@ class Advisor extends Model<AdvisorAttributes> implements AdvisorAttributes {
 //Configura atributos e integra ao Banco de Dados
 Advisor.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  nome: { type: DataTypes.STRING(100), allowNull: false },
+  nome: { type: DataTypes.STRING(100), allowNull: false, unique: true },
   email: { type: DataTypes.STRING(100), allowNull: false },
   cpf: { type: DataTypes.STRING(14), allowNull: false, unique: true },
   senha: { type: DataTypes.STRING(100), allowNull: false }
