@@ -22,7 +22,7 @@ class Employer extends Model<EmpregadorAttributes> implements EmpregadorAttribut
 Employer.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   nome: { type: DataTypes.STRING(100), allowNull: false },
-  email: { type: DataTypes.STRING(100), allowNull: false },
+  email: { type: DataTypes.STRING(100), allowNull: false, unique: true },
   rg: { type: DataTypes.STRING(20) },
   cargo: { type: DataTypes.STRING(100) },
   idEmpresa: { type: DataTypes.INTEGER, allowNull: false },
