@@ -14,6 +14,7 @@ const courseController = new CourseController();
  *         - nome
  *         - quantSemestre
  *         - periodo
+ *         - codigo
  *       properties:
  *         nome:
  *           type: string
@@ -24,6 +25,9 @@ const courseController = new CourseController();
  *         periodo:
  *           type: string
  *           description: Período do curso
+ *         codigo:
+ *           type: string
+ *           description: Abreviação do curso
  */
 
 /**
