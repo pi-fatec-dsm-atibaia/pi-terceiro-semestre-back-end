@@ -5,13 +5,14 @@ export class CourseController {
     //Cria tabela de curso
     async create(req: Request, res: Response) {
         try {
-            const {id, nome, quantSemestre, periodo} = req.body;
+            const {id, nome, quantSemestre, periodo,codigo} = req.body;
 
             const course = await Course.create({
                 id,
                 nome,
                 quantSemestre,
-                periodo
+                periodo,
+                codigo
             });
 
             res.status(201).json({
