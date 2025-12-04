@@ -33,4 +33,28 @@ export class CourseController {
             });
         }
     }
+
+    async getById(req: Request, res: Response){
+        try {
+            const { id } = req.params;
+            const course = await Course.findByPk(id);
+
+            if(!course){
+                res.status(404).json({
+                    message: 'Curso não existe!',
+
+                })
+            }
+
+            res.status(200).json({
+                message: 'Curso encontrado!',
+                data: course,
+            })
+        } catch (error: any) {
+            res.status(500).json({
+                message: 'Erro interno do servidor',
+                error: error.message,
+            })
+        }
+    }
 }

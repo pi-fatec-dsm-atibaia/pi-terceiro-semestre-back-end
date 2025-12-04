@@ -80,4 +80,27 @@ const courseController = new CourseController();
 
 router.post('/', courseController.create);
 
+/**
+ * @swagger
+ * /api/courses/{id}:
+ *   get:
+ *     summary: Busca um curso por ID
+ *     tags: [Courses]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID do curso
+ *     responses:
+ *       200:
+ *         description: Curso encontrado!
+ *       404:
+ *         description: Curso não encontrado!
+ *       500:
+ *         description: Erro interno do servidor
+ */
+router.get('/:id', courseController.getById);
+
 export default router;
