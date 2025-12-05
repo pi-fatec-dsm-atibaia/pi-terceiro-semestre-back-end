@@ -2,7 +2,6 @@ import dotenv from 'dotenv';
 import path from 'path';
 dotenv.config({path: path.resolve(__dirname,'.env') });
 
-import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
@@ -22,6 +21,7 @@ import linkRoutes from './routes/linkRoutes';
 import authRoutes from './routes/authRoutes';
 import documentRoutes from './routes/documentRoutes';
 import employerRoutes from './routes/EmployerRoutes';
+import equivalenceRoutes from './routes/equivalenceRoutes';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -40,6 +40,7 @@ app.use('/api/auth', authRoutes);
 app.use('./uploads', express.static(path.join(__dirname, '../uploads')));
 app.use('/api/documents', documentRoutes)
 app.use('/api/employer', employerRoutes);
+app.use('/api/equivalences', equivalenceRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'API de Cadastro de Alunos' });
