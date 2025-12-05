@@ -6,6 +6,7 @@ import Equivalence from "../models/Equivalence";
 import Employer from "../models/Employer";
 import Company from "../models/Company";
 import { Association, Model, where } from "sequelize";
+import Course from "../models/Course";
 
 //Controler da Solicitação
 export class RequestController {
@@ -92,11 +93,30 @@ export class RequestController {
                         idEmpregador: empregador.id
                     }
                 );
-                res.status(201).json({
+                return res.status(201).json({
                     message: 'Solicitação enviada com sucesso',
                     data: { result, empregador, empresa }
                 });
             }
+
+            const result = await RequestM.create(
+                {
+                    idEquivalencia,
+                    protocolo,
+                    dtSolicitacao,
+                    statusSolicitacao,
+                    observacao,
+                    funcao,
+                    departamento,
+                    periodoTrabalho,
+                    idAluno,
+                    idEmpregador: 0
+                }
+            );
+            return res.status(201).json({
+                message: 'Solicitação enviada com sucesso',
+                data: { result }
+            });
 
         }
         catch (error: any) {
@@ -129,8 +149,16 @@ export class RequestController {
                         as: "aluno",
                         where: { idCurso: id },
                         attributes: {
-                            exclude: ['senha']
-                        }
+                            exclude: ['senha', "idCurso"]
+                        },
+                        include:[
+                            {
+                                association: "curso"
+                            }
+                        ]
+                    },
+                    {
+                        association: "equivalencia"
                     }
                 ]
             });
@@ -159,10 +187,21 @@ export class RequestController {
                         as: "aluno",
                         where: { id: id },
                         attributes: {
-                            exclude: ['senha']
-                        }
-                    }
-                ]
+                            exclude: ['senha', "idCurso"]
+                        },
+                        include:[
+                            {
+                                association: "curso"
+                            }
+                        ]
+                    },
+                    {
+                        association: "equivalencia"
+                    },
+                ],
+                attributes: {
+                    exclude: ['idEquivalencia', "idEmpregador", "idAluno"]
+                }
             })
 
             res.status(201).json({
