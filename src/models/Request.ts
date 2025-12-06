@@ -12,7 +12,7 @@ export interface SolicitacaoAttributes {
   departamento?: string;
   periodoTrabalho?: string;
   idAluno: number;
-  idEmpregador: number;
+  idEmpregador: number | null;
 }
 
 class Request extends Model<SolicitacaoAttributes> implements SolicitacaoAttributes {
@@ -26,7 +26,7 @@ class Request extends Model<SolicitacaoAttributes> implements SolicitacaoAttribu
   public departamento?: string;
   public periodoTrabalho?: string;
   public idAluno!: number;
-  public idEmpregador!: number;
+  public idEmpregador!: number | null;
   
 }
 
