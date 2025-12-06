@@ -1,6 +1,9 @@
 import { RequestController } from "../controllers/RequestController";
 import { Router } from "express";
 
+import multer from "multer";
+const upload = multer({ dest: "uploads/" });
+
 const router = Router();
 const requestController = new RequestController();
 
@@ -86,9 +89,77 @@ const requestController = new RequestController();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Request'
+ *             type: object
+ *             properties:
+ *               tipoEquivalencia:
+ *                 type: string
+ *               protocolo:
+ *                 type: string
+ *               dtSolicitacao:
+ *                 type: string
+ *                 format: date
+ *               statusSolicitacao:
+ *                 type: string
+ *               observacao:
+ *                 type: string
+ *               funcao:
+ *                 type: string
+ *               departamento:
+ *                 type: string
+ *               periodoTrabalho:
+ *                 type: string
+ *               idAluno:
+ *                 type: integer
+ *
+ *               empregadorNome:
+ *                 type: string
+ *               empregadorEmail:
+ *                 type: string
+ *               empregadorRg:
+ *                 type: string
+ *               empregadorCargo:
+ *                 type: string
+ *               empresaNome:
+ *                 type: string
+ *               empresaCnpj:
+ *                 type: string
+ *               cnpj:
+ *                 type: string
+ *               site:
+ *                 type: string
+ *               razaoSocial:
+ *                 type: string
+ *               endereco:
+ *                 type: string
+ *
+ *               # ---- DOCUMENTOS (FILES) ----
+ *               Informativo_CTPS:
+ *                 type: string
+ *                 format: binary
+ *               Registro_CTPS:
+ *                 type: string
+ *                 format: binary
+ *               Cópia_da_Identidade Militar:
+ *                 type: string
+ *                 format: binary
+ *               Histórico_de_Atividades:
+ *                 type: string
+ *                 format: binary
+ *               Comprovante_de_Inscrição:
+ *                 type: string
+ *                 format: binary
+ *               Declaração_do_Contador_da_Empresa:
+ *                 type: string
+ *                 format: binary
+ *               Declaração_de_atividade_exercida:
+ *                 type: string
+ *                 format: binary
+ *               Contrato_Social_da_Empresa:
+ *                 type: string
+ *                 format: binary
+ *
  *     responses:
  *       201:
  *         description: Solicitação criada com sucesso
@@ -125,7 +196,22 @@ const requestController = new RequestController();
  *                   type: string
  */
 
-router.post('/', requestController.sendRequest);
+router.post(
+  "/",
+  upload.fields([
+    { name: "Informativo_CTPS", maxCount: 1 },
+    { name: "Registro_CTPS", maxCount: 1 },
+    { name: "Cópia_da_Identidade Militar", maxCount: 1 },
+    { name: "Histórico_de_Atividades", maxCount: 1 },
+    { name: "Comprovante_de_Inscrição", maxCount: 1 },
+    { name: "Declaração_do_Contador_da_Empresa", maxCount: 1 },
+    { name: "Declaração_de_atividade_exercida", maxCount: 1 },
+    { name: "Contrato_Social_da_Empresa", maxCount: 1 },
+    { name: "Declaração_do_Contador_da_Empresa", maxCount: 1 },
+  ]),
+  requestController.sendRequest
+);
+
 
 
 /**
