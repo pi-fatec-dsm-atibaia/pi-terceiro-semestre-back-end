@@ -110,7 +110,7 @@ export class RequestController {
                     departamento,
                     periodoTrabalho,
                     idAluno,
-                    idEmpregador: 0
+                    idEmpregador: null
                 }
             );
             return res.status(201).json({
