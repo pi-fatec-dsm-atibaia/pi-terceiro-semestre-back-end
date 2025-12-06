@@ -19,7 +19,6 @@ import courseRoutes from './routes/courseRoutes';
 import requestRoutes from './routes/requestRoutes';
 import linkRoutes from './routes/linkRoutes';
 import authRoutes from './routes/authRoutes';
-import documentRoutes from './routes/documentRoutes';
 import employerRoutes from './routes/EmployerRoutes';
 import equivalenceRoutes from './routes/equivalenceRoutes';
 
@@ -38,7 +37,6 @@ app.use('/api/request', requestRoutes);
 app.use('/api/link', linkRoutes);
 app.use('/api/auth', authRoutes);
 app.use('./uploads', express.static(path.join(__dirname, '../uploads')));
-app.use('/api/documents', documentRoutes)
 app.use('/api/employer', employerRoutes);
 app.use('/api/equivalences', equivalenceRoutes);
 
