@@ -9,82 +9,119 @@ import Document from "../models/Document";
 import { Association, Model, where } from "sequelize";
 import Course from "../models/Course";
 
+
 //Controler da Solicitação
 export class RequestController {
     // Envia solicitação com os dados fornecidos pelo aluno
     async sendRequest(req: Request, res: Response) {
-    try {
-        const {
-            protocolo,
-            dtSolicitacao,
-            statusSolicitacao,
-            observacao,
-            funcao,
-            departamento,
-            periodoTrabalho,
-            idAluno,
+        try {
+            const {
+                protocolo,
+                observacao,
+                funcao,
+                departamento,
+                periodoTrabalho,
+                idAluno,
 
-            //Dados Equivalencia
-            tipoEquivalencia,
-            idEquivalencia,
+                // //Dados Equivalencia
+                tipoEquivalencia,
+                idEquivalencia,
 
-            //Dados Empregador
-            empregadorNome,
-            empregadorEmail,
-            empregadorRg,
-            empregadorCargo,
+                //Dados Empregador
+                empregadorNome,
+                empregadorEmail,
+                empregadorRg,
+                empregadorCargo,
+                
+                // Dados Empresa (caso precise criar)
+                cnpj,
+                site,
+                razaoSocial,
+                endereco,
+            } = req.body;
 
-            //Dados Empresa
-            empresaNome,
-            empresaCnpj,
+            const dtSolicitacao = new Date().toString();
+            const statusSolicitacao = "Em Análise."
 
-            // Dados Empresa (caso precise criar)
-            cnpj,
-            site,
-            razaoSocial,
-            endereco,
-        } = req.body;
+            console.log(req.body);
 
-        const equivalencia = await Equivalence.findOne({
-            where: {tipoEquivalencia: tipoEquivalencia }
-        });
-
-        if (!equivalencia) {
-            return res.status(404).json({
-                message: "Tipo de equivalência não encontrado."
+            const equivalencia = await Equivalence.findOne({
+                where: { tipoEquivalencia: tipoEquivalencia }
             });
-        }
 
-        // ===========================================================
-        //                    CASO CTPS
-        // ===========================================================
-        if (equivalencia.tipoEquivalencia === "CTPS") {
-
-            let empresa = await Company.findOne({ where: { cnpj } });
-
-            if (!empresa) {
-                empresa = await Company.create({
-                    cnpj,
-                    razaoSocial,
-                    site,
-                    endereco,
+            if (!equivalencia) {
+                return res.status(404).json({
+                    message: "Tipo de equivalência não encontrado."
                 });
             }
 
-            let empregador = await Employer.findOne({
-                where: { email: empregadorEmail }
-            });
+            // ===========================================================
+            //                    CASO CTPS
+            // ===========================================================
+            if (equivalencia.tipoEquivalencia === "CTPS") {
 
-            if (!empregador) {
-                empregador = await Employer.create({
-                    nome: empregadorNome,
-                    email: empregadorEmail,
-                    rg: empregadorRg,
-                    cargo: empregadorCargo,
-                    idEmpresa: empresa.id
+                let empresa = await Company.findOne({ where: { cnpj } });
+
+                if (!empresa) {
+                    empresa = await Company.create({
+                        cnpj,
+                        razaoSocial,
+                        site,
+                        endereco,
+                    });
+                }
+
+                let empregador = await Employer.findOne({
+                    where: { email: empregadorEmail }
+                });
+
+                if (!empregador) {
+                    empregador = await Employer.create({
+                        nome: empregadorNome,
+                        email: empregadorEmail,
+                        rg: empregadorRg,
+                        cargo: empregadorCargo,
+                        idEmpresa: empresa.id
+                    });
+                }
+
+                const result = await RequestM.create({
+                    tipoEquivalencia: equivalencia.tipoEquivalencia,
+                    protocolo,
+                    dtSolicitacao,
+                    statusSolicitacao,
+                    observacao,
+                    funcao,
+                    departamento,
+                    periodoTrabalho,
+                    idAluno,
+                    idEmpregador: empregador.id,
+                    idEquivalencia: equivalencia.id
+                });
+
+                if (req.files && Object.keys(req.files).length > 0) {
+                    const files = req.files as Record<string, Express.Multer.File[]>;
+
+                    for (const fieldName of Object.keys(files)) {
+                        const file = files[fieldName][0];
+
+                        await Document.create({
+                            idSolicitacao: result.id,
+                            tipoArquivo: fieldName,
+                            arquivo: `/uploads/${file.filename}`
+                        });
+                    }
+                }
+
+                return res.status(201).json({
+                    message: 'Solicitação enviada com sucesso',
+                    data: { result, empregador, empresa }
                 });
             }
 
+            // ===========================================================
+            //               OUTROS TIPOS DE EQUIVALÊNCIA
+            // ===========================================================
             const result = await RequestM.create({
                 tipoEquivalencia: equivalencia.tipoEquivalencia,
                 protocolo,
@@ -95,7 +132,7 @@ export class RequestController {
                 departamento,
                 periodoTrabalho,
                 idAluno,
-                idEmpregador: empregador.id,
+                idEmpregador: null,
                 idEquivalencia: equivalencia.id
             });
 
@@ -115,61 +152,26 @@ export class RequestController {
 
             return res.status(201).json({
                 message: 'Solicitação enviada com sucesso',
-                data: { result, empregador, empresa }
+                data: { result }
             });
-        }
 
-        // ===========================================================
-        //               OUTROS TIPOS DE EQUIVALÊNCIA
-        // ===========================================================
-        const result = await RequestM.create({
-            tipoEquivalencia: equivalencia.tipoEquivalencia,
-            protocolo,
-            dtSolicitacao,
-            statusSolicitacao,
-            observacao,
-            funcao,
-            departamento,
-            periodoTrabalho,
-            idAluno,
-            idEmpregador: null,
-            idEquivalencia: equivalencia.id
-        });
+        } catch (error: any) {
 
-        if (req.files && Object.keys(req.files).length > 0) {
-            const files = req.files as Record<string, Express.Multer.File[]>;
-
-            for (const fieldName of Object.keys(files)) {
-                const file = files[fieldName][0];
-
-                await Document.create({
-                    idSolicitacao: result.id,
-                    tipoArquivo: fieldName,
-                    arquivo: `/uploads/${file.filename}`
+            if (error.name === 'SequelizeUniqueConstraintError') {
+                return res.status(400).json({
+                    message: 'Dados já existem no sistema',
+                    error: error.errors[0].message
                 });
             }
-        }
 
-        return res.status(201).json({
-            message: 'Solicitação enviada com sucesso',
-            data: { result }
-        });
-
-    } catch (error: any) {
-
-        if (error.name === 'SequelizeUniqueConstraintError') {
-            return res.status(400).json({
-                message: 'Dados já existem no sistema',
-                error: error.errors[0].message
+            res.status(500).json({
+                message: 'Erro ao criar solicitação',
+                error: error.message
             });
-        }
 
-        res.status(500).json({
-            message: 'Erro ao criar solicitação',
-            error: error.message
-        });
+            console.log(error.message1);
+        }
     }
-}
 
     // Retorna as solicitações de determinado curso
     async listRequestsFromCourse(req: Request, res: Response) {

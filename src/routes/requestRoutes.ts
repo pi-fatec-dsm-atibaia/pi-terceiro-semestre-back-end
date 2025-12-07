@@ -2,6 +2,7 @@ import { RequestController } from "../controllers/RequestController";
 import { Router } from "express";
 
 import multer from "multer";
+import { createMulterHandler } from "../factories/createMulterHandler";
 const upload = multer({ dest: "uploads/" });
 
 const router = Router();
@@ -62,7 +63,7 @@ const requestController = new RequestController();
  *           type: string
  *           description: Cargo do empregador
  *
- *         # EMPRESA
+ *         # `EMPRESA`
  *         cnpj:
  *           type: string
  *           description: CNPJ da empresa
@@ -198,16 +199,15 @@ const requestController = new RequestController();
 
 router.post(
   "/",
-  upload.fields([
+  createMulterHandler([
     { name: "Informativo_CTPS", maxCount: 1 },
     { name: "Registro_CTPS", maxCount: 1 },
-    { name: "Cópia_da_Identidade Militar", maxCount: 1 },
-    { name: "Histórico_de_Atividades", maxCount: 1 },
-    { name: "Comprovante_de_Inscrição", maxCount: 1 },
-    { name: "Declaração_do_Contador_da_Empresa", maxCount: 1 },
-    { name: "Declaração_de_atividade_exercida", maxCount: 1 },
+    { name: "Copia_da_Identidade_Militar", maxCount: 1 },
+    { name: "Historico_de_Atividades", maxCount: 1 },
+    { name: "Comprovante_de_Inscricao", maxCount: 1 },
+    { name: "Declaracao_do_Contador_da_Empresa", maxCount: 1 },
+    { name: "Declaracao_de_atividade_exercida", maxCount: 1 },
     { name: "Contrato_Social_da_Empresa", maxCount: 1 },
-    { name: "Declaração_do_Contador_da_Empresa", maxCount: 1 },
   ]),
   requestController.sendRequest
 );
