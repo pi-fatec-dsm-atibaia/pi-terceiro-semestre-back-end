@@ -3,7 +3,7 @@ import sequelize from "../config/database";
 
 export interface SolicitacaoAttributes {
   id?: number;
-  idEquivalencia: number;
+  tipoEquivalencia: string;
   protocolo?: string;
   dtSolicitacao: string;
   statusSolicitacao: string;
@@ -13,11 +13,12 @@ export interface SolicitacaoAttributes {
   periodoTrabalho?: string;
   idAluno: number;
   idEmpregador: number | null;
+  idEquivalencia: number;
 }
 
 class Request extends Model<SolicitacaoAttributes> implements SolicitacaoAttributes {
   public id!: number;
-  public idEquivalencia!: number;
+  public tipoEquivalencia!: string;
   public protocolo?: string;
   public dtSolicitacao!: string;
   public statusSolicitacao!: string;
@@ -27,12 +28,13 @@ class Request extends Model<SolicitacaoAttributes> implements SolicitacaoAttribu
   public periodoTrabalho?: string;
   public idAluno!: number;
   public idEmpregador!: number | null;
+  public idEquivalencia!: number;
   
 }
 
 Request.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-  idEquivalencia: { type: DataTypes.INTEGER, allowNull: false },
+  tipoEquivalencia: { type: DataTypes.STRING(30), allowNull: false },
   protocolo: { type: DataTypes.STRING(50) },
   dtSolicitacao: { type: DataTypes.STRING(10), allowNull: false },
   statusSolicitacao: { type: DataTypes.STRING(50), allowNull: false },
@@ -41,7 +43,8 @@ Request.init({
   departamento: { type: DataTypes.STRING(100) },
   periodoTrabalho: { type: DataTypes.STRING(100) },
   idAluno: { type: DataTypes.INTEGER, allowNull: false },
-  idEmpregador: { type: DataTypes.INTEGER, allowNull: true}
+  idEmpregador: { type: DataTypes.INTEGER, allowNull: true},
+  idEquivalencia: { type: DataTypes.INTEGER, allowNull: false}
 }, {
   sequelize,
   tableName: "Solicitacao",
