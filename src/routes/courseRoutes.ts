@@ -103,4 +103,21 @@ router.post('/', courseController.create);
  */
 router.get('/:id', courseController.getById);
 
+
+/**
+ * @swagger
+ * /api/courses/:
+ *   get:
+ *     summary: Lista todos os cursos
+ *     tags: [Courses]
+ *     responses:
+ *       200:
+ *         description: Cursos encontrado!
+ *       404:
+ *         description: Cursos não encontrado!
+ *       500:
+ *         description: Erro interno do servidor
+ */
+router.get('/', courseController.list)
+
 export default router;

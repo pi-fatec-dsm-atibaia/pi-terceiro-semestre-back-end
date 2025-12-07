@@ -57,4 +57,27 @@ export class CourseController {
             })
         }
     }
+
+    async list(req: Request, res: Response){
+        try{
+            const result = await Course.findAll({});
+
+            if (!result){
+                res.status(404).json({
+                message: "Cursos não encontrados"
+                })    
+            }
+
+            res.status(200).json({
+                message: "Cursos encontrados",
+                data: result
+            })
+        }
+        catch(error : any){
+            res.status(500).json({
+                message: 'Erro interno do servidor',
+                error: error.message,
+            })
+        }
+    }
 }
