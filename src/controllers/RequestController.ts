@@ -9,6 +9,7 @@ import Document from "../models/Document";
 import { Association, Model, where } from "sequelize";
 import Course from "../models/Course";
 
+
 //Controler da Solicitação
 export class RequestController {
     // Envia solicitação com os dados fornecidos pelo aluno
