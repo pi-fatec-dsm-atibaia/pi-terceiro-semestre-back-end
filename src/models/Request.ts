@@ -36,7 +36,7 @@ Request.init({
   id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
   tipoEquivalencia: { type: DataTypes.STRING(30), allowNull: false },
   protocolo: { type: DataTypes.STRING(50) },
-  dtSolicitacao: { type: DataTypes.STRING(10), allowNull: false },
+  dtSolicitacao: { type: DataTypes.STRING(100), allowNull: false },
   statusSolicitacao: { type: DataTypes.STRING(50), allowNull: false },
   observacao: { type: DataTypes.TEXT },
   funcao: { type: DataTypes.STRING(100) },

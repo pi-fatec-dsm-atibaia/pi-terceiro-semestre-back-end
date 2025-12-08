@@ -87,7 +87,7 @@ export class RequestController {
 
                 const result = await RequestM.create({
                     tipoEquivalencia: equivalencia.tipoEquivalencia,
-                    protocolo,
+                    protocolo: Date.now().toString(),
                     dtSolicitacao,
                     statusSolicitacao,
                     observacao,
@@ -124,7 +124,7 @@ export class RequestController {
             // ===========================================================
             const result = await RequestM.create({
                 tipoEquivalencia: equivalencia.tipoEquivalencia,
-                protocolo,
+                protocolo: Date.now().toString(),
                 dtSolicitacao,
                 statusSolicitacao,
                 observacao,
