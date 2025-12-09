@@ -16,7 +16,7 @@ export class MailService {
     async sendPasswordResetEmail(email: string, token: string) {
         const domain = process.env.MAILGUN_DOMAIN!;
         
-        const resetLink = `${process.env.FRONTEND_URL}/auth/reset-password?token=${token}`;
+        const resetLink = `${process.env.FRONTEND_URL}/recuperacao-senha/mudar-senha?token=${token}`;
 
         return await this.mg.messages.create(domain, {
             from: process.env.MAILGUN_FROM!,
