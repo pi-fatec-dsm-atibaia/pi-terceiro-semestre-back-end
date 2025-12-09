@@ -18,6 +18,7 @@ import adminRoutes from './routes/adminRoutes';
 import courseRoutes from './routes/courseRoutes';
 import requestRoutes from './routes/requestRoutes';
 import linkRoutes from './routes/linkRoutes';
+import loginRoutes from './routes/loginRoutes';
 import authRoutes from './routes/authRoutes';
 import employerRoutes from './routes/EmployerRoutes';
 import equivalenceRoutes from './routes/equivalenceRoutes';
@@ -29,6 +30,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.use('/api/login', loginRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/advisors', advisorRoutes);
 app.use('/api/admins', adminRoutes);
