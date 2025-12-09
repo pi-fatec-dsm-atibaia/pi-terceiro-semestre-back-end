@@ -26,6 +26,7 @@ export class MailService {
                 <h2>Recuperação de Senha</h2>
                 <p>Clique no link abaixo para redefinir sua senha:</p>
                 <a href="${resetLink}">${resetLink}</a>
+                
                 <p>Este link expira em 1 hora.</p>
             `,
         });
